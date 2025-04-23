@@ -1,4 +1,4 @@
-import bpData from '../data/battlePass.json';
+import battlePassData from '../public/data/battlePass.json';
 
 interface TrackerInput {
   level: number;
@@ -21,7 +21,7 @@ export const calculatePacks = (input: TrackerInput) => {
 
   // Battle Pass Packs
   input.battlePass.forEach(({ season, levelReached, bought }) => {
-    const bpSeason = bpData[season as keyof typeof bpData];
+    const bpSeason = battlePassData[season as keyof typeof battlePassData];
     if (bpSeason) {
       const free = bpSeason.free.filter((lvl: number) => lvl <= levelReached).length;
       const paid = bought ? bpSeason.paid.filter((lvl: number) => lvl <= levelReached).length : 0;
