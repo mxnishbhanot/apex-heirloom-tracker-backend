@@ -1,4 +1,4 @@
-import battlePassData from '../public/data/battlePass.json';
+import battlePassData from '../../public/data/battlepass.json';
 
 interface TrackerInput {
   level: number;
