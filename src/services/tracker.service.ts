@@ -1,4 +1,5 @@
 import battlePassData from '../../public/data/battlepass.json';
+import funnyMessages from '../../public/data/funnyMessages.json';
 
 interface TrackerInput {
   level: number;
@@ -9,6 +10,17 @@ interface TrackerInput {
   }[];
   purchasedPacks?: number;
 }
+
+const getFunnyMessage = (progressPercent: number): string => {
+  if (progressPercent >= 100) return pickRandom(funnyMessages.maxed);
+  if (progressPercent >= 75) return pickRandom(funnyMessages.high);
+  if (progressPercent >= 50) return pickRandom(funnyMessages.medium);
+  return pickRandom(funnyMessages.low);
+};
+
+const pickRandom = (arr: string[]): string => {
+  return arr[Math.floor(Math.random() * arr.length)];
+};
 
 export const calculatePacks = (input: TrackerInput) => {
   let totalPacks = 0;
@@ -32,9 +44,14 @@ export const calculatePacks = (input: TrackerInput) => {
   // Purchased Packs
   totalPacks += input.purchasedPacks || 0;
 
+  const remaining = Math.max(500 - totalPacks, 0);
+  const progressPercent = Math.min((totalPacks / 500) * 100, 100);
+  const message = getFunnyMessage(progressPercent);
+
   return {
     totalPacks,
-    remaining: Math.max(500 - totalPacks, 0),
-    progressPercent: Math.min((totalPacks / 500) * 100, 100)
+    remaining,
+    progressPercent,
+    message
   };
 };
